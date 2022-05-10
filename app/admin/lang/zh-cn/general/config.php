@@ -80,5 +80,6 @@ return [
     'Please input your email'              => '请输入测试接收者邮箱',
     'Please input correct email'           => '请输入正确的邮箱地址',
     'Tpl'                                  => 'pc端模板',
-    'Mtpl'                                 => '手机端模板'
+    'Mtpl'                                 => '手机端模板',
+    'Friendship Link'                      => '友链代码'
 ];

@@ -51,7 +51,7 @@
                         <p> 6、联系方式：https://t.me/easy_cms</p>
                         <p>  <span style="color:#FF0000;">友链代码：</span>
                             <textarea name="textfield" cols="100" rows="1" style="outline:none; resize: auto">
-                                <a href="https://t.me/easy_cms" target="_blank">{$site_name}</a>
+                                {$flink}
                             </textarea>
                         </p>
                     </div>
@@ -62,7 +62,7 @@
                         <input type="text" id="site_name" class="form-control" placeholder="网站名称">
                     </div>
                     <div class="form-group">
-                        <input type="text" id="site_url" class="form-control" placeholder="您的网址">
+                        <input type="text" id="site_url" class="form-control" placeholder="您的网址，必须包含协议头">
                     </div>
                     <div class="form-group">
                         <select id="cate" class="form-control">
@@ -104,11 +104,13 @@
                 layer.alert('验证码不能为空', {offset: '100px', title: '提交出错'});
                 return false;
             }
+            console.log( $("#cate").val())
             $.post("index/index/shoulu", {
                     "act": "submit",
                     'site_name': $("#site_name").val(),
                     'site_url': $("#site_url").val(),
                     'captcha': $("#scode").val(),
+                    'cate': $("#cate").val(),
                 },
                 function (data) {
                     if (data.code == '0') {

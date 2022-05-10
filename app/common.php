@@ -1158,7 +1158,7 @@ if (! function_exists('getSites')) {
     {
         $models = cache('sites:' . $order . $where . $num);
         if ($models == false) {
-            $models = \app\admin\model\Site::getSites($order, $where, $num);
+            $models = \app\common\model\Site::getSites($order, $where, $num);
             cache('sites:' . $order . $where . $num, $models);
         }
         return $models;
@@ -1170,7 +1170,7 @@ if (! function_exists('getApps')) {
     {
         $models = cache('apps:' . $order . $where . $num);
         if ($models == false) {
-            $models = \app\admin\model\App::getApps($order, $where, $num);
+            $models = \app\common\model\App::getApps($order, $where, $num);
             cache('apps:' . $order . $where . $num, $models);
         }
         return $models;
@@ -1180,7 +1180,7 @@ if (! function_exists('getApps')) {
 if (! function_exists('getPagedSites')) {
     function getPagedSites($order, $where, $pagesize): array
     {
-        $data = \app\admin\model\Site::getPagedSites($order, $where, $pagesize);
+        $data = \app\common\model\Site::getPagedSites($order, $where, $pagesize);
         unset($data['page']['query']['page']);
         $param = '';
         foreach ($data['page']['query'] as $k => $v) {
@@ -1198,7 +1198,7 @@ if (! function_exists('getPagedSites')) {
 if (! function_exists('getPagedApps')) {
     function getPagedApps($order, $where, $pagesize): array
     {
-        $data = \app\admin\model\App::getPagedApps($order, $where, $pagesize);
+        $data = \app\common\model\App::getPagedApps($order, $where, $pagesize);
         unset($data['page']['query']['page']);
         $param = '';
         foreach ($data['page']['query'] as $k => $v) {
@@ -1209,6 +1209,13 @@ if (! function_exists('getPagedApps')) {
         $paged['page'] = $data['page'];
         $paged['param'] = $param;
         return $paged;
+    }
+}
+
+if(! function_exists('replaceSpecialChar')) {
+    function replaceSpecialChar($strParam){
+        $regex = "/\ |\<|\>|\?|/";
+        return preg_replace($regex,"",$strParam);
     }
 }
 

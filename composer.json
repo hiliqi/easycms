@@ -31,7 +31,8 @@
         "endroid/qr-code": "^1.9",
         "phpmailer/phpmailer": "~6.1",
         "phpoffice/phpspreadsheet": "^1.13",
-        "nelexa/zip": "^4.0"
+        "nelexa/zip": "^4.0",
+        "guzzlehttp/guzzle": "^7.4"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2"

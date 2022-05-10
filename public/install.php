@@ -48,7 +48,7 @@ if (is_file('../config/install.lock') && $_GET['step'] != 5) {
 
 $config = include "../config/fastadmin.php";
 $site_name = 'easy导航管理系统';
-$site_url = 'https://www.iuok.cn';
+$site_url = 'https://github.com/hiliqi/easycms';
 $version = $config['version'] ?: '2.0.0';
 $_date = date('Y');
 $sql_url = '../yfcmf_tp6.sql';

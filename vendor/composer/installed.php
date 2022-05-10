@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '5611c50cfc742ea9ad7c0f2acea6e7e3af5810af',
+        'reference' => '43e11034e262122c3652475b315d701c2754eebb',
         'name' => '0377/yfcmf-tp6',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '5611c50cfc742ea9ad7c0f2acea6e7e3af5810af',
+            'reference' => '43e11034e262122c3652475b315d701c2754eebb',
             'dev_requirement' => false,
         ),
         'dragonmantank/cron-expression' => array(

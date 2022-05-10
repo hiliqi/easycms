@@ -1,14 +1,14 @@
 <?php
 
-namespace app\admin\model;
+namespace app\common\model;
 
 use app\common\model\BaseModel;
 
 
-class Site extends BaseModel
+class App extends BaseModel
 {
     // 表名
-    protected $name = 'site';
+    protected $name = 'app';
     
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = 'int';
@@ -29,7 +29,7 @@ class Site extends BaseModel
     }
 
     //自定义标签获取列表
-    public static function getSites($order, $where, $num)
+    public static function getApps($order, $where, $num)
     {
         if ($num == 0) {
             $models = self::where($where)
@@ -49,7 +49,7 @@ class Site extends BaseModel
     }
 
     //自定义标签获取分页列表
-    public static function getPagedSites($order, $where, $pagesize)
+    public static function getPagedApps($order, $where, $pagesize)
     {
         $data = self::where($where)->order($order)
             ->paginate([

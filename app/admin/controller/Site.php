@@ -15,14 +15,14 @@ class Site extends Backend
     
     /**
      * Site模型对象
-     * @var \app\admin\model\Site
+     * @var \app\common\model\Site
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\Site;
+        $this->model = new \app\common\model\Site;
         $this->view->assign('cateList',
             build_select('row[category_id]', \app\common\model\Category::column('name', 'id'),
                 null,
@@ -88,7 +88,7 @@ class Site extends Backend
             $this->error(__('No Results were found'));
         }
         $this->view->assign('cateList',
-            build_select('row[category_id]', \app\admin\model\Category::column('name', 'id'), $row['category_id'],
+            build_select('row[category_id]', \app\common\model\Category::column('name', 'id'), $row['category_id'],
                 ['class' => 'form-control selectpicker']));
 
         return parent::edit($ids);

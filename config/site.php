@@ -38,5 +38,6 @@ return [
         "category1" => "Category1",
         "category2" => "Category2",
         "custom" => "Custom"
-    ]
+    ],
+    "friendship" => "<a href=\"http://xs.com/\">easycms</a>"
 ];

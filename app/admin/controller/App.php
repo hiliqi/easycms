@@ -14,16 +14,16 @@ class App extends Backend
     
     /**
      * App模型对象
-     * @var \app\admin\model\App
+     * @var \app\common\model\App
      */
     protected $model = null;
 
     public function _initialize()
     {
         parent::_initialize();
-        $this->model = new \app\admin\model\App;
+        $this->model = new \app\common\model\App;
         $this->view->assign('cateList',
-            build_select('row[category_id]', \app\admin\model\Category::column('name', 'id'),
+            build_select('row[category_id]', \app\common\model\Category::column('name', 'id'),
                 null,
                 ['class' => 'form-control selectpicker']));
     }
@@ -87,7 +87,7 @@ class App extends Backend
             $this->error(__('No Results were found'));
         }
         $this->view->assign('cateList',
-            build_select('row[category_id]', \app\admin\model\Category::column('name', 'id'), $row['category_id'],
+            build_select('row[category_id]', \app\common\model\Category::column('name', 'id'), $row['category_id'],
                 ['class' => 'form-control selectpicker']));
 
         return parent::edit($ids);

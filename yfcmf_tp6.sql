@@ -470,40 +470,40 @@ INSERT INTO `__PREFIX__auth_rule`
 VALUES ('84', 'file', '79', 'user/rule/multi', 'user.rule/multi', 'Multi', 'fa fa-circle-o', '', '', '0', '1516374729',
         '1516374729', '0', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (85, 'file', 0, 'site', '', '网站管理', 'fa fa-internet-explorer', '', '', 1, '1516374729', '1516374729', 0,
+VALUES ('85', 'file', '0', 'site', '', '网站管理', 'fa fa-internet-explorer', '', '', '1', '1516374729', '1516374729', '142',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (86, 'file', 97, 'site/index', 'site.index/index', '查看', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729',
-        0, 'normal');
+VALUES ('86', 'file', '97', 'site/index', 'site.index/index', '查看', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729',
+        '0', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (87, 'file', 97, 'site/add', 'site.add/index', '添加', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729', 0,
+VALUES ('87', 'file', '97', 'site/add', 'site.add/index', '添加', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729', '0',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (88, 'file', 97, 'site/edit', 'site.edit/index', '编辑', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729',
-        0, 'normal');
+VALUES ('88', 'file', '97', 'site/edit', 'site.edit/index', '编辑', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729',
+        '0', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (89, 'file', 97, 'site/del', 'site.del/index', '删除', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729', 0,
+VALUES ('89', 'file', '97', 'site/del', 'site.del/index', '删除', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729', '0',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (90, 'file', 97, 'site/multi', 'site.multi/index', '批量更新', 'fa fa-circle-o', '', '', 0, '1516374729',
-        '1516374729', 0, 'normal');
+VALUES ('90', 'file', '97', 'site/multi', 'site.multi/index', '批量更新', 'fa fa-circle-o', '', '', '0', '1516374729',
+        '1516374729', '0', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (91, 'file', 0, 'app', '', 'App管理', 'fa fa-apple', '', '', 1, NULL, 1646642796, 0, 'normal');
+VALUES ('91', 'file', '0', 'app', '', 'App管理', 'fa fa-apple', '', '', '1', NULL, 1646642796, '142', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (92, 'file', 103, 'app/index', 'app.index/index', '查看', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729',
-        0, 'normal');
+VALUES ('92', 'file', '103', 'app/index', 'app.index/index', '查看', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729',
+        '0', 'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (93, 'file', 103, 'app/add', 'app.add/index', '添加', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729', 0,
+VALUES ('93', 'file', '103', 'app/add', 'app.add/index', '添加', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729', '0',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (94, 'file', 103, 'app/edit', 'app.edit/index', '编辑', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729', 0,
+VALUES ('94', 'file', '103', 'app/edit', 'app.edit/index', '编辑', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729', '0',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (95, 'file', 103, 'app/del', 'app.del/index', '删除', 'fa fa-circle-o', '', '', 0, '1516374729', '1516374729', 0,
+VALUES ('95', 'file', '103', 'app/del', 'app.del/index', '删除', 'fa fa-circle-o', '', '', '0', '1516374729', '1516374729', '0',
         'normal');
 INSERT INTO `fa_auth_rule`
-VALUES (96, 'file', 103, 'app/multi', 'app.multi/index', '批量更新', 'fa fa-circle-o', '', '', 0, '1516374729',
-        '1516374729', 0, 'normal');
+VALUES ('96', 'file', '103', 'app/multi', 'app.multi/index', '批量更新', 'fa fa-circle-o', '', '', '0', '1516374729',
+        '1516374729', '0', 'normal');
 
 -- ----------------------------
 -- Table structure for fa_category
@@ -572,9 +572,9 @@ VALUES ('7', 'languages', 'basic', 'Languages', '', 'array', '{\"backend\":\"zh-
 INSERT INTO `__PREFIX__config`
 VALUES ('8', 'fixedpage', 'basic', 'Fixed page', '请尽量输入左侧菜单栏存在的链接', 'string', 'dashboard', '', 'required', '', '');
 INSERT INTO `__PREFIX__config`
-VALUES ('9', 'tpl', 'basic', 'Tpl', '请填写pc模板目录', 'string', 'default', '', 'required', '', '');
+VALUES ('9', 'tpl', 'basic', 'Tpl', '请填写pc模板目录', 'string', 'daohang', '', 'required', '', '');
 INSERT INTO `__PREFIX__config`
-VALUES ('10', 'mtpl', 'basic', 'Mtpl', '请填写手机模板目录', 'string', 'default', '', 'required', '', '');
+VALUES ('10', 'mtpl', 'basic', 'Mtpl', '请填写手机模板目录', 'string', 'daohang', '', 'required', '', '');
 INSERT INTO `__PREFIX__config`
 VALUES ('11', 'categorytype', 'dictionary', 'Category type', '', 'array',
         '{\"default\":\"Default\",\"page\":\"Page\",\"article\":\"Article\",\"test\":\"Test\"}', '', '', '', '');
@@ -603,6 +603,8 @@ VALUES ('19', 'mail_from', 'email', 'Mail from', '', 'string', '10000@qq.com', '
 INSERT INTO `__PREFIX__config`
 VALUES ('20', 'attachmentcategory', 'dictionary', 'Attachment category', '', 'array',
         '{\"category1\":\"Category1\",\"category2\":\"Category2\",\"custom\":\"Custom\"}', '', '', '', '');
+INSERT INTO `__PREFIX__config`
+VALUES ('21', 'friendship', 'basic', 'Friendship Link', '友链代码', 'string', '', '', 'required', '', '');
 
 -- ----------------------------
 -- Table structure for fa_ems
