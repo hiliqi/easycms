@@ -2,7 +2,7 @@
 
 namespace app\index\controller;
 
-use app\admin\model\App;
+use app\common\model\App;
 use app\common\model\Category;
 use app\common\model\Site;
 use GuzzleHttp\Client;

@@ -13,6 +13,7 @@
 namespace app\admin\library\traits;
 
 use app\admin\model\User;
+use think\db\exception\PDOException;
 use think\Exception;
 use think\facade\Db;
 use app\admin\library\Auth;
@@ -54,31 +55,21 @@ trait Backend
     public function index()
     {
         //设置过滤方法
-        $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax()) {
-            //如果发送的来源是Selectpage，则转发到Selectpage
-            if ($this->request->request('keyField')) {
-                return $this->selectpage();
-            }
-            [$where, $sort, $order, $offset, $limit] = $this->buildparams();
-            $total = $this->model
-                ->where($where)
-                ->order($sort, $order)
-                ->count();
-
-            $list = $this->model
-                ->where($where)
-                ->order($sort, $order)
-                ->limit($offset, $limit)
-                ->select();
-
-            $list   = $list->toArray();
-            $result = ['total' => $total, 'rows' => $list];
-
-            return json($result);
+        $this->request->filter(['strip_tags', 'trim']);
+        if (false === $this->request->isAjax()) {
+            return $this->view->fetch();
         }
-
-        return $this->view->fetch();
+        //如果发送的来源是 Selectpage，则转发到 Selectpage
+        if ($this->request->request('keyField')) {
+            return $this->selectpage();
+        }
+        [$where, $sort, $order, $offset, $limit] = $this->buildparams();
+        $list = $this->model
+            ->where($where)
+            ->order($sort, $order)
+            ->paginate($limit);
+        $result = ['total' => $list->total(), 'rows' => $list->items()];
+        return json($result);
     }
 
     /**
@@ -87,75 +78,59 @@ trait Backend
     public function recyclebin()
     {
         //设置过滤方法
-        $this->request->filter(['strip_tags']);
-        if ($this->request->isAjax()) {
-            [$where, $sort, $order, $offset, $limit] = $this->buildparams();
-            $total = $this->model
-                ->onlyTrashed()
-                ->where($where)
-                ->order($sort, $order)
-                ->count();
-
-            $list = $this->model
-                ->onlyTrashed()
-                ->where($where)
-                ->order($sort, $order)
-                ->limit($offset, $limit)
-                ->select();
-
-            $result = ['total' => $total, 'rows' => $list];
-
-            return json($result);
+        $this->request->filter(['strip_tags', 'trim']);
+        if (false === $this->request->isAjax()) {
+            return $this->view->fetch();
         }
-
-        return $this->view->fetch();
+        [$where, $sort, $order, $offset, $limit] = $this->buildparams();
+        $list = $this->model
+            ->onlyTrashed()
+            ->where($where)
+            ->order($sort, $order)
+            ->paginate($limit);
+        $result = ['total' => $list->total(), 'rows' => $list->items()];
+        return json($result);
     }
 
     /**
      * 添加
+     *
+     * @return string
+     * @throws \think\Exception
      */
     public function add()
     {
-        if ($this->request->isPost()) {
-            $params = $this->request->post('row/a');
-            if ($params) {
-                $params = $this->preExcludeFields($params);
-
-                if ($this->dataLimit && $this->dataLimitFieldAutoFill) {
-                    $params[$this->dataLimitField] = $this->auth->id;
-                }
-                $result = false;
-                Db::startTrans();
-
-                try {
-                    //是否采用模型验证
-                    if ($this->modelValidate) {
-                        $name     = str_replace('\\model\\', '\\validate\\', get_class($this->model));
-                        $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name.'.add' : $name) : $this->modelValidate;
-                        validate($validate)->scene($this->modelSceneValidate ? 'edit' : $name)->check($params);
-                    }
-                    $result = $this->model->save($params);
-                    Db::commit();
-                } catch (ValidateException $e) {
-                    Db::rollback();
-                    $this->error($e->getMessage());
-                } catch (\PDOException $e) {
-                    Db::rollback();
-                    $this->error($e->getMessage());
-                } catch (Exception $e) {
-                    Db::rollback();
-                    $this->error($e->getMessage());
-                }
-                if ($result !== false) {
-                    $this->success();
-                } else {
-                    $this->error(__('No rows were inserted'));
-                }
-            }
+        if (false === $this->request->isPost()) {
+            return $this->view->fetch();
+        }
+        $params = $this->request->post('row/a');
+        if (empty($params)) {
             $this->error(__('Parameter %s can not be empty', ''));
         }
+        $params = $this->preExcludeFields($params);
 
-        return $this->view->fetch();
+        if ($this->dataLimit && $this->dataLimitFieldAutoFill) {
+            $params[$this->dataLimitField] = $this->auth->id;
+        }
+        $result = false;
+        Db::startTrans();
+        try {
+            //是否采用模型验证
+            if ($this->modelValidate) {
+                $name = str_replace("\\model\\", "\\validate\\", get_class($this->model));
+                $validate = is_bool($this->modelValidate) ? ($this->modelSceneValidate ? $name . '.add' : $name) : $this->modelValidate;
+                $this->model->validateFailException()->validate($validate);
+            }
+            $result = $this->model->save($params);
+            Db::commit();
+        } catch (ValidateException|PDOException|Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if ($result === false) {
+            $this->error(__('No rows were inserted'));
+        }
+        $this->success();
     }
 
     /**
