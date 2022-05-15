@@ -56,7 +56,7 @@
                 </div>
                 <div class="index-links-content">
                     {nav:sites name="sites" order="site_order asc" limit="12" id="site"
-                    where="category_id=($vo->id)"}
+                    where="category_id=($vo->id)  and status='normal'"}
                     <a href="/sitedetail/{$site.id}" target="_blank">
                         <div class="lan cu">{$site.site_name}</div>
                     </a>

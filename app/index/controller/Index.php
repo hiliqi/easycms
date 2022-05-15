@@ -22,6 +22,7 @@ class Index extends Base
     public function shoulu()
     {
         $flink = config('site.friendship');
+        $this->request->filter(['strip_tags', 'trim']);
         if (request()->isPost()) {
             if (Config::get('fastadmin.login_captcha')) {
                 $rule['captcha|' . __('Captcha')] = 'require|captcha';
@@ -32,8 +33,8 @@ class Index extends Base
             if (!$result) {
                 return json(['code' => 1, 'msg' => '验证码错误']);
             }
-            $site_name = replaceSpecialChar(request()->param('site_name'));
-            $site_url = replaceSpecialChar(request()->param('site_url'));
+            $site_name = request()->param('site_name');
+            $site_url = request()->param('site_url');
             if (substr($site_url, 0, 4) !== "http") {
                 return json(['code' => 1, 'msg' => '网址格式不对']);
             }
@@ -74,6 +75,7 @@ class Index extends Base
             $site->clicks = $site->clicks + 1;
             $site->dclicks = $site->dclicks + 1;
             $site->save();
+            cache('site:' . $id, $site);
             cookie('click:' . $ip, $ip);
         }
         return redirect($site->url);
@@ -92,6 +94,7 @@ class Index extends Base
             $app->clicks = $app->clicks + 1;
             $app->dclicks = $app->dclicks + 1;
             $app->save();
+            cache('appinfo:' . $id, $app);
             cookie('click:' . $ip, $ip);
         }
         return view($this->tpl, [
