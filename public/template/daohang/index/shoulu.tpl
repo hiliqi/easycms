@@ -23,7 +23,7 @@
     <nav class="layui-container">
         <div class="logo"><a href="/">{$site_name}</a></div>
         <ul class="layui-nav layui-layout-left header-menu">
-          <span class="introduce"> {$site_name} 本站域名： http://easycms.xyz
+          <span class="introduce"> {$site_name} 本站域名： {$flink}
           </span>
             <span class="layui-nav-bar"></span>
         </ul>
@@ -49,7 +49,7 @@
                         <p> 4、站点每日来路低于30ip直接删除不予通知；</p>
                         <p> 5、刷量别来申请，能检测到，求求你们了！</p>
                         <p> 6、联系方式：https://t.me/easy_cms</p>
-                        <p>  <span style="color:#FF0000;">友链代码：</span>
+                        <p>  <span style="color:#FF0000;">本站域名：</span>
                             <textarea name="textfield" cols="100" rows="1" style="outline:none; resize: auto">
                                 {$flink}
                             </textarea>

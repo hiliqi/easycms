@@ -14,7 +14,7 @@
     <nav class="layui-container">
         <div class="logo"><a href="/">{$site_name}</a></div>
         <ul class="layui-nav layui-layout-left header-menu">
-            <span class="introduce">本站域名： http://easycms.xyz</span>
+            <span class="introduce">本站域名： {$flink}</span>
             <span class="layui-nav-bar"></span>
         </ul>
         <ul class="layui-nav layui-layout-right">

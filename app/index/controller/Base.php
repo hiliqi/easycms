@@ -22,7 +22,8 @@ class Base extends Frontend
         $this->tpl = $tpl_root .'/'. $controller . '/' . $action . '.tpl';
 
         $this->view->assign([
-            'site_name' => $this->site_name
+            'site_name' => $this->site_name,
+            'flink' => config('site.friendship')
         ]);
     }
 }

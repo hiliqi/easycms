@@ -44,8 +44,8 @@ class Index extends Base
                 return json(['code' => 1, 'msg' => '网址请求失败']);
             }
             $html = $res->getBody()->getContents();
-            if (!str_contains($html, $flink)) { //未检测到友链代码
-                return json(['code' => 1, 'msg' => '未在网站首页检测到友链代码']);
+            if (!str_contains($html, $flink)) { //未检测到本站域名
+                return json(['code' => 1, 'msg' => '未在网站首页检测到本站域名']);
             }
             $site = new Site();
             $site->site_name = $site_name;
@@ -59,7 +59,6 @@ class Index extends Base
         $cates = Category::all();
         return $this->view->fetch($this->tpl, [
             'cates' => $cates,
-            'flink' => $flink
         ]);
     }
 
