@@ -29,10 +29,10 @@ CREATE TABLE `__PREFIX__admin`
     `avatar`       varchar(255) NOT NULL DEFAULT '' COMMENT '头像',
     `email`        varchar(100) NOT NULL DEFAULT '' COMMENT '电子邮箱',
     `loginfailure` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '失败次数',
-    `logintime`    int(10) DEFAULT NULL COMMENT '登录时间',
+    `logintime`    bigint(16) DEFAULT NULL COMMENT '登录时间',
     `loginip`      varchar(50)           DEFAULT NULL COMMENT '登录IP',
-    `createtime`   int(10) DEFAULT NULL COMMENT '创建时间',
-    `updatetime`   int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime`   bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `updatetime`   bigint(16) DEFAULT NULL COMMENT '更新时间',
     `token`        varchar(59)  NOT NULL DEFAULT '' COMMENT 'Session标识',
     `status`       varchar(30)  NOT NULL DEFAULT 'normal' COMMENT '状态',
     PRIMARY KEY (`id`),
@@ -61,7 +61,7 @@ CREATE TABLE `__PREFIX__admin_log`
     `content`    text          NOT NULL COMMENT '内容',
     `ip`         varchar(50)   NOT NULL DEFAULT '' COMMENT 'IP',
     `useragent`  varchar(255)  NOT NULL DEFAULT '' COMMENT 'User-Agent',
-    `createtime` int(10) DEFAULT NULL COMMENT '操作时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '操作时间',
     PRIMARY KEY (`id`),
     KEY          `name` (`username`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='管理员日志表';
@@ -80,8 +80,8 @@ CREATE TABLE `__PREFIX__site`
     `category_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类ID',
     `status`      varchar(30)  NOT NULL DEFAULT 'normal' COMMENT '状态',
     `site_order`  decimal(4, 2) NOT NULL DEFAULT 0.00 COMMENT '站点排序',
-    `createtime`  int(10) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
-    `updatetime`  int(10) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
+    `createtime`  bigint(16) UNSIGNED NULL DEFAULT NULL COMMENT '创建时间',
+    `updatetime`  bigint(16) UNSIGNED NULL DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`) USING BTREE,
     KEY           `site_name` (`site_name`)
 ) ENGINE = InnoDB CHARACTER SET = utf8 ROW_FORMAT = COMPACT COMMENT='站点表';
@@ -101,8 +101,8 @@ CREATE TABLE `__PREFIX__app`
     `android`     varchar(100) NOT NULL COMMENT '安卓下载链接',
     `ios`         varchar(100) NOT NULL COMMENT 'ios下载链接',
     `app_order`   decimal(4, 2)   NOT NULL DEFAULT 0.00 COMMENT 'app排序',
-    `createtime`  int(10) NULL DEFAULT NULL COMMENT '创建时间',
-    `updatetime`  int(10) NULL DEFAULT NULL COMMENT '更新时间',
+    `createtime`  bigint(16) NULL DEFAULT NULL COMMENT '创建时间',
+    `updatetime`  bigint(16) NULL DEFAULT NULL COMMENT '更新时间',
     `status`      varchar(30) NOT NULL DEFAULT 'normal' COMMENT '状态',
     `category_id` int(10) UNSIGNED NOT NULL DEFAULT 0 COMMENT '分类id',
     PRIMARY KEY (`id`) USING BTREE
@@ -127,9 +127,9 @@ CREATE TABLE `__PREFIX__attachment`
     `filesize`    int(10) unsigned NOT NULL DEFAULT '0' COMMENT '文件大小',
     `mimetype`    varchar(100) NOT NULL DEFAULT '' COMMENT 'mime类型',
     `extparam`    varchar(255) NOT NULL DEFAULT '' COMMENT '透传数据',
-    `createtime`  int(10) DEFAULT NULL COMMENT '创建日期',
-    `updatetime`  int(10) DEFAULT NULL COMMENT '更新时间',
-    `uploadtime`  int(10) DEFAULT NULL COMMENT '上传时间',
+    `createtime`  bigint(16) DEFAULT NULL COMMENT '创建日期',
+    `updatetime`  bigint(16) DEFAULT NULL COMMENT '更新时间',
+    `uploadtime`  bigint(16) DEFAULT NULL COMMENT '上传时间',
     `storage`     varchar(100) NOT NULL DEFAULT 'local' COMMENT '存储位置',
     `sha1`        varchar(40)  NOT NULL DEFAULT '' COMMENT '文件 sha1编码',
     PRIMARY KEY (`id`)
@@ -152,8 +152,8 @@ CREATE TABLE `__PREFIX__auth_group`
     `pid`        int(10) unsigned NOT NULL DEFAULT '0' COMMENT '父组别',
     `name`       varchar(100) NOT NULL DEFAULT '' COMMENT '组名',
     `rules`      text         NOT NULL COMMENT '规则ID',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-    `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `updatetime` bigint(16) DEFAULT NULL COMMENT '更新时间',
     `status`     varchar(30)  NOT NULL DEFAULT '' COMMENT '状态',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='分组表';
@@ -213,8 +213,8 @@ CREATE TABLE `__PREFIX__auth_rule`
     `condition`  varchar(255) NOT NULL DEFAULT '' COMMENT '条件',
     `remark`     varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
     `ismenu`     tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否为菜单',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-    `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `updatetime` bigint(16) DEFAULT NULL COMMENT '更新时间',
     `weigh`      int(10) NOT NULL DEFAULT '0' COMMENT '权重',
     `status`     varchar(30)  NOT NULL DEFAULT '' COMMENT '状态',
     PRIMARY KEY (`id`),
@@ -522,8 +522,8 @@ CREATE TABLE `__PREFIX__category`
     `keywords`    varchar(255) NOT NULL DEFAULT '' COMMENT '关键字',
     `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
     `diyname`     varchar(30)  NOT NULL DEFAULT '' COMMENT '自定义名称',
-    `createtime`  int(10) DEFAULT NULL COMMENT '创建时间',
-    `updatetime`  int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime`  bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `updatetime`  bigint(16) DEFAULT NULL COMMENT '更新时间',
     `weigh`       int(10) NOT NULL DEFAULT '0' COMMENT '权重',
     `status`      varchar(30)  NOT NULL DEFAULT '' COMMENT '状态',
     PRIMARY KEY (`id`),
@@ -620,7 +620,7 @@ CREATE TABLE `__PREFIX__ems`
     `code`       varchar(10)  NOT NULL DEFAULT '' COMMENT '验证码',
     `times`      int(10) unsigned NOT NULL DEFAULT '0' COMMENT '验证次数',
     `ip`         varchar(30)  NOT NULL DEFAULT '' COMMENT 'IP',
-    `createtime` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+    `createtime` bigint(16) unsigned DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='邮箱验证码表';
 
@@ -640,7 +640,7 @@ CREATE TABLE `__PREFIX__sms`
     `code`       varchar(10) NOT NULL DEFAULT '' COMMENT '验证码',
     `times`      int(10) unsigned NOT NULL DEFAULT '0' COMMENT '验证次数',
     `ip`         varchar(30) NOT NULL DEFAULT '' COMMENT 'IP',
-    `createtime` int(10) unsigned DEFAULT '0' COMMENT '创建时间',
+    `createtime` bigint(16) unsigned DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='短信验证码表';
 
@@ -678,10 +678,10 @@ CREATE TABLE `__PREFIX__test`
   `activitytime` datetime DEFAULT NULL COMMENT '活动时间(datetime)',
   `year` year(4) DEFAULT NULL COMMENT '年',
   `times` time DEFAULT NULL COMMENT '时间',
-  `refreshtime` int(10) DEFAULT NULL COMMENT '刷新时间(int)',
-  `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-  `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
-  `deletetime` int(10) DEFAULT NULL COMMENT '删除时间',
+  `refreshtime` bigint(16) DEFAULT NULL COMMENT '刷新时间(int)',
+  `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
+  `updatetime` bigint(16) DEFAULT NULL COMMENT '更新时间',
+  `deletetime` bigint(16) DEFAULT NULL COMMENT '删除时间',
   `weigh` int(10) NOT NULL DEFAULT '0' COMMENT '权重',
   `switch` tinyint(1) NOT NULL DEFAULT '0' COMMENT '开关',
   `status` enum('normal','hidden') NOT NULL DEFAULT 'normal' COMMENT '状态',
@@ -726,9 +726,9 @@ CREATE TABLE `__PREFIX__user`
     `loginip`        varchar(50)  NOT NULL DEFAULT '' COMMENT '登录IP',
     `loginfailure`   tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '失败次数',
     `joinip`         varchar(50)  NOT NULL DEFAULT '' COMMENT '加入IP',
-    `jointime`       int(10) NOT NULL COMMENT '加入时间',
-    `createtime`     int(10) NOT NULL COMMENT '创建时间',
-    `updatetime`     int(10) NOT NULL COMMENT '更新时间',
+    `jointime`       bigint(16) NOT NULL COMMENT '加入时间',
+    `createtime`     bigint(16) NOT NULL COMMENT '创建时间',
+    `updatetime`     bigint(16) NOT NULL COMMENT '更新时间',
     `token`          varchar(50)  NOT NULL DEFAULT '' COMMENT 'Token',
     `status`         varchar(30)  NOT NULL DEFAULT '' COMMENT '状态',
     `verification`   varchar(255) NOT NULL DEFAULT '' COMMENT '验证',
@@ -755,8 +755,8 @@ CREATE TABLE `__PREFIX__user_group`
     `id`         int(10) unsigned NOT NULL AUTO_INCREMENT,
     `name`       varchar(50) DEFAULT '' COMMENT '组名',
     `rules`      text COMMENT '权限节点',
-    `createtime` int(10) DEFAULT NULL COMMENT '添加时间',
-    `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '添加时间',
+    `updatetime` bigint(16) DEFAULT NULL COMMENT '更新时间',
     `status`     enum('normal','hidden') DEFAULT NULL COMMENT '状态',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='会员组表';
@@ -779,7 +779,7 @@ CREATE TABLE `__PREFIX__user_money_log`
     `before`     decimal(10, 2) NOT NULL DEFAULT '0.00' COMMENT '变更前余额',
     `after`      decimal(10, 2) NOT NULL DEFAULT '0.00' COMMENT '变更后余额',
     `memo`       varchar(255)   NOT NULL DEFAULT '' COMMENT '备注',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='会员余额变动表';
 
@@ -799,8 +799,8 @@ CREATE TABLE `__PREFIX__user_rule`
     `title`      varchar(50)  DEFAULT '' COMMENT '标题',
     `remark`     varchar(100) DEFAULT NULL COMMENT '备注',
     `ismenu`     tinyint(1) DEFAULT NULL COMMENT '是否菜单',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-    `updatetime` int(10) DEFAULT NULL COMMENT '更新时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `updatetime` bigint(16) DEFAULT NULL COMMENT '更新时间',
     `weigh`      int(10) DEFAULT '0' COMMENT '权重',
     `status`     enum('normal','hidden') DEFAULT NULL COMMENT '状态',
     PRIMARY KEY (`id`)
@@ -846,7 +846,7 @@ CREATE TABLE `__PREFIX__user_score_log`
     `before`     int(10) NOT NULL DEFAULT '0' COMMENT '变更前积分',
     `after`      int(10) NOT NULL DEFAULT '0' COMMENT '变更后积分',
     `memo`       varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='会员积分变动表';
 
@@ -862,8 +862,8 @@ CREATE TABLE `__PREFIX__user_token`
 (
     `token`      varchar(50) NOT NULL COMMENT 'Token',
     `user_id`    int(10) unsigned NOT NULL DEFAULT '0' COMMENT '会员ID',
-    `createtime` int(10) DEFAULT NULL COMMENT '创建时间',
-    `expiretime` int(10) DEFAULT NULL COMMENT '过期时间',
+    `createtime` bigint(16) DEFAULT NULL COMMENT '创建时间',
+    `expiretime` bigint(16) DEFAULT NULL COMMENT '过期时间',
     PRIMARY KEY (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='会员Token表';
 
@@ -884,8 +884,8 @@ CREATE TABLE `__PREFIX__version`
     `content`     varchar(500) NOT NULL DEFAULT '' COMMENT '升级内容',
     `downloadurl` varchar(255) NOT NULL DEFAULT '' COMMENT '下载地址',
     `enforce`     tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '强制更新',
-    `createtime`  int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
-    `updatetime`  int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+    `createtime`  bigint(16) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `updatetime`  bigint(16) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
     `weigh`       int(10) NOT NULL DEFAULT '0' COMMENT '权重',
     `status`      varchar(30)  NOT NULL DEFAULT '' COMMENT '状态',
     PRIMARY KEY (`id`) USING BTREE

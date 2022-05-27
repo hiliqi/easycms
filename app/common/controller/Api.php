@@ -13,7 +13,6 @@
 namespace app\common\controller;
 
 use think\App;
-use think\Loader;
 use think\Request;
 use think\Response;
 use think\facade\Lang;

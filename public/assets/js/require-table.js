@@ -26,7 +26,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                 },
                 ignoreColumn: [0, 'operate'] //默认不导出第一列(checkbox)与操作(operate)列
             },
-            pageSize: localStorage.getItem("pagesize") || 10,
+            pageSize: Config.pagesize || 10,
             pageList: [10, 15, 20, 25, 50, 'All'],
             pagination: true,
             clickToSelect: true, //是否启用点击选中
@@ -158,7 +158,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                 var toolbar = $(options.toolbar, parenttable);
                 //跨页提示按钮
                 var tipsBtn = $(".btn-selected-tips", parenttable);
-                if (tipsBtn.size() === 0) {
+                if (tipsBtn.length === 0) {
                     tipsBtn = $('<a href="javascript:" class="btn btn-warning-light btn-selected-tips hide" data-animation="false" data-toggle="tooltip" data-title="' + __("Click to uncheck all") + '"><i class="fa fa-info-circle"></i> ' + __("Multiple selection mode: %s checked", "<b>0</b>") + '</a>').appendTo(toolbar);
                 }
                 //点击提示按钮
@@ -190,12 +190,6 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                 table.on('refresh.bs.table', function (e, settings, data) {
                     $(Table.config.refreshbtn, toolbar).find(".fa").addClass("fa-spin");
                 });
-                //当表格分页变更时
-                table.on('page-change.bs.table', function (e, page, pagesize) {
-                    if (!isNaN(pagesize)) {
-                        localStorage.setItem("pagesize", pagesize);
-                    }
-                });
                 //当执行搜索时
                 table.on('search.bs.table common-search.bs.table', function (e, settings, data) {
                     table.trigger("uncheckbox");
@@ -217,7 +211,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                 //当内容渲染完成后
                 table.on('post-body.bs.table', function (e, data) {
                     $(Table.config.refreshbtn, toolbar).find(".fa").removeClass("fa-spin");
-                    if ($(Table.config.checkboxtd + ":first", table).find("input[type='checkbox'][data-index]").size() > 0) {
+                    if ($(Table.config.checkboxtd + ":first", table).find("input[type='checkbox'][data-index]").length > 0) {
                         // 拖拽选择,需要重新绑定事件
                         require(['drag', 'drop'], function () {
                             var checkboxtd = $(Table.config.checkboxtd, table);
@@ -320,7 +314,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                     Fast.api.open(url, $(this).data("original-title") || $(this).attr("title") || __('Add'), $(this).data() || {});
                 });
                 // 导入按钮事件
-                if ($(Table.config.importbtn, toolbar).size() > 0) {
+                if ($(Table.config.importbtn, toolbar).length > 0) {
                     require(['upload'], function (Upload) {
                         Upload.api.upload($(Table.config.importbtn, toolbar), function (data, ret) {
                             Fast.api.ajax({
@@ -509,16 +503,13 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                         var btnGroup = $(this);
                         var isPullRight = dropdownMenu.hasClass("pull-right") || dropdownMenu.hasClass("dropdown-menu-right");
                         var left, top, position;
-                        if (dropdownMenu.outerHeight() + btnGroup.outerHeight() > tableBody.outerHeight() - 41) {
+                        if (true || dropdownMenu.outerHeight() + btnGroup.outerHeight() > tableBody.outerHeight() - 41) {
                             position = 'fixed';
                             top = btnGroup.offset().top - $(window).scrollTop() + btnGroup.outerHeight();
-                            left = isPullRight ? btnGroup.offset().left + btnGroup.outerWidth() - dropdownMenu.outerWidth() : btnGroup.offset().left;
-                        } else {
-                            if (btnGroup.offset().top + btnGroup.outerHeight() + dropdownMenu.outerHeight() > tableBody.offset().top + tableBody.outerHeight() - 30) {
-                                position = 'absolute';
-                                left = isPullRight ? -(dropdownMenu.outerWidth() - btnGroup.outerWidth()) : 0;
-                                top = -(dropdownMenu.outerHeight() + 3);
+                            if ((top + dropdownMenu.outerHeight()) > $(window).height()) {
+                                top = btnGroup.offset().top - dropdownMenu.outerHeight() - 5;
                             }
+                            left = isPullRight ? btnGroup.offset().left + btnGroup.outerWidth() - dropdownMenu.outerWidth() : btnGroup.offset().left;
                         }
                         if (left || top) {
                             dropdownMenu.css({
@@ -542,6 +533,12 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                 var id = table.attr("id");
                 Table.list[id] = table;
                 return table;
+            },
+            // 设置全局分页的单页显示数
+            pageSize: function (pageSize) {
+                if (!isNaN(pageSize)) {
+                    localStorage.setItem('page-size', pageSize);
+                }
             },
             // 批量操作请求
             multi: function (action, ids, table, element) {
@@ -611,9 +608,12 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                         var data = [];
                         value = value === null ? '' : value.toString();
                         var arr = value != '' ? value.split(",") : [];
+                        var url;
                         $.each(arr, function (index, value) {
+                            url = Fast.api.cdnurl(value);
                             data.push({
-                                src: Fast.api.cdnurl(value),
+                                src: url,
+                                thumb: url.match(/^(\/|data:image\\)/) ? url : url + Config.upload.thumbstyle
                             });
                         });
                         Layer.photos({
@@ -638,16 +638,45 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                     value = value == null || value.length === 0 ? '' : value.toString();
                     value = value ? value : '/assets/img/blank.gif';
                     var classname = typeof this.classname !== 'undefined' ? this.classname : 'img-sm img-center';
-                    return '<a href="javascript:"><img class="' + classname + '" src="' + Fast.api.cdnurl(value) + '" /></a>';
+                    var url = Fast.api.cdnurl(value, true);
+                    url = url.match(/^(\/|data:image\\)/) ? url : url + Config.upload.thumbstyle;
+                    return '<a href="javascript:"><img class="' + classname + '" src="' + url + '" /></a>';
                 },
                 images: function (value, row, index) {
                     value = value == null || value.length === 0 ? '' : value.toString();
                     var classname = typeof this.classname !== 'undefined' ? this.classname : 'img-sm img-center';
                     var arr = value != '' ? value.split(',') : [];
                     var html = [];
+                    var url;
                     $.each(arr, function (i, value) {
                         value = value ? value : '/assets/img/blank.gif';
-                        html.push('<a href="javascript:"><img class="' + classname + '" src="' + Fast.api.cdnurl(value) + '" /></a>');
+                        url = Fast.api.cdnurl(value, true);
+                        url = url.match(/^(\/|data:image\\)/) ? url : url + Config.upload.thumbstyle;
+                        html.push('<a href="javascript:"><img class="' + classname + '" src="' + url + '" /></a>');
+                    });
+                    return html.join(' ');
+                },
+                file: function (value, row, index) {
+                    value = value == null || value.length === 0 ? '' : value.toString();
+                    value = Fast.api.cdnurl(value, true);
+                    var classname = typeof this.classname !== 'undefined' ? this.classname : 'img-sm img-center';
+                    var suffix = /[\.]?([a-zA-Z0-9]+)$/.exec(value);
+                    suffix = suffix ? suffix[1] : 'file';
+                    var url = Fast.api.fixurl("ajax/icon?suffix=" + suffix);
+                    return '<a href="' + value + '" target="_blank"><img src="' + url + '" class="' + classname + '"></a>';
+                },
+                files: function (value, row, index) {
+                    value = value == null || value.length === 0 ? '' : value.toString();
+                    var classname = typeof this.classname !== 'undefined' ? this.classname : 'img-sm img-center';
+                    var arr = value != '' ? value.split(',') : [];
+                    var html = [];
+                    var suffix, url;
+                    $.each(arr, function (i, value) {
+                        value = Fast.api.cdnurl(value, true);
+                        suffix = /[\.]?([a-zA-Z0-9]+)$/.exec(value);
+                        suffix = suffix ? suffix[1] : 'file';
+                        url = Fast.api.fixurl("ajax/icon?suffix=" + suffix);
+                        html.push('<a href="' + value + '" target="_blank"><img src="' + url + '" class="' + classname + '"></a>');
                     });
                     return html.join(' ');
                 },
@@ -846,7 +875,7 @@ define(['jquery', 'bootstrap', 'moment', 'moment/locale/zh-cn', 'bootstrap-table
                         dropdown = j.dropdown ? j.dropdown : '';
                         url = j.url ? j.url : '';
                         url = typeof url === 'function' ? url.call(table, row, j) : (url ? Fast.api.fixurl(Table.api.replaceurl(url, row, table)) : 'javascript:;');
-                        classname = j.classname ? j.classname : 'btn-primary btn-' + name + 'one';
+                        classname = j.classname ? j.classname : (dropdown ? 'btn-' + name + 'one' : 'btn-primary btn-' + name + 'one');
                         icon = j.icon ? j.icon : '';
                         text = typeof j.text === 'function' ? j.text.call(table, row, j) : j.text ? j.text : '';
                         title = typeof j.title === 'function' ? j.title.call(table, row, j) : j.title ? j.title : text;

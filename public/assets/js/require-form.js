@@ -27,7 +27,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
                     },
                     target: function (input) {
                         var target = $(input).data("target");
-                        if (target && $(target).size() > 0) {
+                        if (target && $(target).length > 0) {
                             return $(target);
                         }
                         var $formitem = $(input).closest('.form-group'),
@@ -92,7 +92,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             selectpicker: function (form) {
                 //绑定select元素事件
-                if ($(".selectpicker", form).size() > 0) {
+                if ($(".selectpicker", form).length > 0) {
                     require(['bootstrap-select', 'bootstrap-select-lang'], function () {
                         $('.selectpicker', form).selectpicker();
                         $(form).on("reset", function () {
@@ -105,7 +105,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             selectpage: function (form) {
                 //绑定selectpage元素事件
-                if ($(".selectpage", form).size() > 0) {
+                if ($(".selectpage", form).length > 0) {
                     require(['selectpage'], function () {
                         $('.selectpage', form).selectPage({
                             eAjaxSuccess: function (data) {
@@ -131,7 +131,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             cxselect: function (form) {
                 //绑定cxselect元素事件
-                if ($("[data-toggle='cxselect']", form).size() > 0) {
+                if ($("[data-toggle='cxselect']", form).length > 0) {
                     require(['cxselect'], function () {
                         $.cxSelect.defaults.jsonName = 'name';
                         $.cxSelect.defaults.jsonValue = 'value';
@@ -142,7 +142,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             citypicker: function (form) {
                 //绑定城市远程插件
-                if ($("[data-toggle='city-picker']", form).size() > 0) {
+                if ($("[data-toggle='city-picker']", form).length > 0) {
                     require(['citypicker'], function () {
                         $(form).on("reset", function () {
                             setTimeout(function () {
@@ -154,7 +154,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             datetimepicker: function (form) {
                 //绑定日期时间元素事件
-                if ($(".datetimepicker", form).size() > 0) {
+                if ($(".datetimepicker", form).length > 0) {
                     require(['bootstrap-datetimepicker'], function () {
                         var options = {
                             format: 'YYYY-MM-DD HH:mm:ss',
@@ -181,7 +181,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             daterangepicker: function (form) {
                 //绑定日期时间元素事件
-                if ($(".datetimerange", form).size() > 0) {
+                if ($(".datetimerange", form).length > 0) {
                     require(['bootstrap-daterangepicker'], function () {
                         var ranges = {};
                         ranges[__('Today')] = [Moment().startOf('day'), Moment().endOf('day')];
@@ -235,13 +235,13 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
              */
             faupload: function (form) {
                 //绑定上传元素事件
-                if ($(".plupload,.faupload", form).size() > 0) {
+                if ($(".plupload,.faupload", form).length > 0) {
                     Upload.api.upload($(".plupload,.faupload", form));
                 }
             },
             faselect: function (form) {
                 //绑定fachoose选择附件事件
-                if ($(".faselect,.fachoose", form).size() > 0) {
+                if ($(".faselect,.fachoose", form).length > 0) {
                     $(".faselect,.fachoose", form).off('click').on('click', function () {
                         var that = this;
                         var multiple = $(this).data("multiple") ? $(this).data("multiple") : false;
@@ -285,7 +285,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
             },
             fieldlist: function (form) {
                 //绑定fieldlist
-                if ($(".fieldlist", form).size() > 0) {
+                if ($(".fieldlist", form).length > 0) {
                     require(['dragsort', 'template'], function (undefined, Template) {
                         //刷新隐藏textarea的值
                         var refresh = function (name) {
@@ -388,7 +388,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
                     var switcher = $.proxy(function () {
                         var input = $(this).prev("input");
                         input = $(this).data("input-id") ? $("#" + $(this).data("input-id")) : input;
-                        if (input.size() > 0) {
+                        if (input.length > 0) {
                             var yes = $(this).data("yes");
                             var no = $(this).data("no");
                             if (input.val() == yes) {
@@ -417,7 +417,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
 
             },
             slider: function (form) {
-                if ($(".slider", form).size() > 0) {
+                if ($(".slider", form).length > 0) {
                     require(['bootstrap-slider'], function () {
                         $('.slider').removeClass('hidden').css('width', function (index, value) {
                             return $(this).parents('.form-control').width();
@@ -433,7 +433,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
         },
         api: {
             submit: function (form, success, error, submit) {
-                if (form.size() === 0) {
+                if (form.length === 0) {
                     Toastr.error("表单未初始化完成,无法提交");
                     return false;
                 }
@@ -449,7 +449,7 @@ define(['jquery', 'bootstrap', 'upload', 'validator', 'validator-lang'], functio
                 //修复当存在多选项元素时提交的BUG
                 var params = {};
                 var multipleList = $("[name$='[]']", form);
-                if (multipleList.size() > 0) {
+                if (multipleList.length > 0) {
                     var postFields = form.serializeArray().map(function (obj) {
                         return $(obj).prop("name");
                     });
