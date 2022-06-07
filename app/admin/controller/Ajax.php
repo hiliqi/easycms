@@ -1,4 +1,5 @@
 <?php
+
 /**
  * *
  *  * ============================================================================
@@ -66,7 +67,7 @@ class Ajax extends Backend
     public function upload()
     {
         //Config::set('default_return_type', 'json');
-        Config::set(['default_return_type'=> 'json'], 'app');
+        Config::set(['default_return_type' => 'json'], 'app');
         $file = $this->request->file('file');
         if (empty($file)) {
             $this->error(__('No file upload or server upload limit exceeded'));
@@ -105,9 +106,9 @@ class Ajax extends Backend
         }
 
         //验证文件后缀
-        if ($upload['mimetype'] !== '*' &&
-            (
-                !in_array($suffix, $mimetypeArr)
+        if (
+            $upload['mimetype'] !== '*' &&
+            (!in_array($suffix, $mimetypeArr)
                 || (stripos($typeArr[0] . '/', $upload['mimetype']) !== false && (!in_array($fileInfo['type'], $mimetypeArr) && !in_array($typeArr[0] . '/*', $mimetypeArr)))
             )
         ) {
@@ -116,11 +117,15 @@ class Ajax extends Backend
 
         //验证是否为图片文件
         $imagewidth = $imageheight = 0;
-        if (in_array($fileInfo['type'],
-                ['image/gif', 'image/jpg', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp']) || in_array($suffix,
-                ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'webp'])) {
+        if (in_array(
+            $fileInfo['type'],
+            ['image/gif', 'image/jpg', 'image/jpeg', 'image/bmp', 'image/png', 'image/webp']
+        ) || in_array(
+            $suffix,
+            ['gif', 'jpg', 'jpeg', 'bmp', 'png', 'webp']
+        )) {
             $imgInfo = getimagesize($fileInfo['tmp_name']);
-            if (! $imgInfo || ! isset($imgInfo[0]) || ! isset($imgInfo[1])) {
+            if (!$imgInfo || !isset($imgInfo[0]) || !isset($imgInfo[1])) {
                 $this->error(__('Uploaded file is not a valid image'));
             }
             $imagewidth = isset($imgInfo[0]) ? $imgInfo[0] : $imagewidth;
@@ -128,14 +133,14 @@ class Ajax extends Backend
         }
 
         //上传图片
-        $_validate[] = 'filesize:'.$size;
+        $_validate[] = 'filesize:' . $size;
         if ($upload['mimetype']) {
-            $_validate[] = 'fileExt:'.$upload['mimetype'];
+            $_validate[] = 'fileExt:' . $upload['mimetype'];
         }
         $validate = implode('|', $_validate);
 
-        $event_config = Event::trigger('upload_init', $upload,true);
-        if($event_config){
+        $event_config = Event::trigger('upload_init', $upload, true);
+        if ($event_config) {
             $upload = array_merge($upload, $event_config);
         }
         try {
@@ -145,7 +150,7 @@ class Ajax extends Backend
             $this->error($e->getMessage());
         }
 
-        if (! $savename) {
+        if (!$savename) {
             $this->error('上传失败');
         }
         $category = request()->post('category');
@@ -209,16 +214,21 @@ class Ajax extends Backend
         // 如果设定了pid的值,此时只匹配满足条件的ID,其它忽略
         if ($pid !== '') {
             $hasids = [];
-            $list = Db::name($table)->where($prikey, 'in', $ids)->where('pid', 'in',
-                $pid)->field("{$prikey},pid")->select();
+            $list = Db::name($table)->where($prikey, 'in', $ids)->where(
+                'pid',
+                'in',
+                $pid
+            )->field("{$prikey},pid")->select();
             foreach ($list as $k => $v) {
                 $hasids[] = $v[$prikey];
             }
             $ids = array_values(array_intersect($ids, $hasids));
         }
 
-        $list = Db::name($table)->field("$prikey,$field")->where($prikey, 'in', $ids)->order($field,
-            $orderway)->select();
+        $list = Db::name($table)->field("$prikey,$field")->where($prikey, 'in', $ids)->order(
+            $field,
+            $orderway
+        )->select();
         foreach ($list as $k => $v) {
             $sour[] = $v[$prikey];
             $weighdata[$v[$prikey]] = $v[$field];
@@ -253,13 +263,13 @@ class Ajax extends Backend
         switch ($type) {
             case 'all':
             case 'content':
-                rmdirs(app()->getRootPath().'runtime'.DIRECTORY_SEPARATOR, false);
+                rmdirs(app()->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR, false);
                 Cache::clear();
                 if ($type == 'content') {
                     break;
                 }
             case 'template':
-                rmdirs(app()->getRootPath().'runtime'.DIRECTORY_SEPARATOR, false);
+                rmdirs(app()->getRootPath() . 'runtime' . DIRECTORY_SEPARATOR, false);
                 if ($type == 'template') {
                     break;
                 }
@@ -302,8 +312,8 @@ class Ajax extends Backend
     public function area()
     {
         $params = $this->request->get('row/a');
-        if (! empty($params)) {
-            $province = isset($params['province']) ? $params['province'] : '';
+        if (!empty($params)) {
+            $province = isset($params['province']) ? $params['province'] : null;
             $city = isset($params['city']) ? $params['city'] : null;
         } else {
             $province = $this->request->get('province');
@@ -311,16 +321,12 @@ class Ajax extends Backend
         }
         $where = ['pid' => 0, 'level' => 1];
         $provincelist = null;
-        if ($province !== '') {
-            if ($province) {
-                $where['pid'] = $province;
-                $where['level'] = 2;
-            }
-            if ($city !== '') {
-                if ($city) {
-                    $where['pid'] = $city;
-                    $where['level'] = 3;
-                }
+        if ($province !== null) {
+            $where['pid'] = $province;
+            $where['level'] = 2;
+            if ($city !== null) {
+                $where['pid'] = $city;
+                $where['level'] = 3;
                 $provincelist = Db::name('area')->where($where)->field('id as value,name')->select();
             }
         }
