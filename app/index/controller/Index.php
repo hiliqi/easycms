@@ -6,6 +6,7 @@ use app\common\model\App;
 use app\common\model\Category;
 use app\common\model\Site;
 use GuzzleHttp\Client;
+use think\facade\Cache;
 use think\facade\Config;
 
 class Index extends Base
@@ -54,6 +55,7 @@ class Index extends Base
             $site->status = 'normal';
             $site->site_order = 1;
             $site->save();
+            Cache::clear(); //清除缓存
             return json(['code' => 0, 'msg' => '提交收录成功']);
         }
         $cates = Category::all();
