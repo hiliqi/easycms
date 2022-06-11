@@ -6,6 +6,7 @@ use app\common\model\App;
 use app\common\model\Category;
 use app\common\model\Site;
 use GuzzleHttp\Client;
+use think\db\exception\ModelNotFoundException;
 use think\facade\Cache;
 use think\facade\Config;
 
@@ -39,24 +40,29 @@ class Index extends Base
             if (substr($site_url, 0, 4) !== "http") {
                 return json(['code' => 1, 'msg' => '网址格式不对']);
             }
-            $client = new Client();
-            $res = $client->request('GET', $site_url); //读取版本号
-            if ((int)($res->getStatusCode()) != 200) {
-                return json(['code' => 1, 'msg' => '网址请求失败']);
+            try {
+                $site = Site::where('url','=',$site_url)->findOrFail();
+                return json(['code' => 1, 'msg' => '已存在相同网址']);
+            } catch (ModelNotFoundException $e) {
+                $client = new Client();
+                $res = $client->request('GET', $site_url);
+                if ((int)($res->getStatusCode()) != 200) {
+                    return json(['code' => 1, 'msg' => '网址请求失败']);
+                }
+                $html = $res->getBody()->getContents();
+                if (!str_contains($html, $flink)) { //未检测到本站域名
+                    return json(['code' => 1, 'msg' => '未在网站首页检测到本站域名']);
+                }
+                $site = new Site();
+                $site->site_name = $site_name;
+                $site->url = $site_url;
+                $site->category_id = request()->param('cate');
+                $site->status = 'normal';
+                $site->site_order = 1;
+                $site->save();
+                Cache::clear(); //清除缓存
+                return json(['code' => 0, 'msg' => '提交收录成功']);
             }
-            $html = $res->getBody()->getContents();
-            if (!str_contains($html, $flink)) { //未检测到本站域名
-                return json(['code' => 1, 'msg' => '未在网站首页检测到本站域名']);
-            }
-            $site = new Site();
-            $site->site_name = $site_name;
-            $site->url = $site_url;
-            $site->category_id = request()->param('cate');
-            $site->status = 'normal';
-            $site->site_order = 1;
-            $site->save();
-            Cache::clear(); //清除缓存
-            return json(['code' => 0, 'msg' => '提交收录成功']);
         }
         $cates = Category::all();
         return $this->view->fetch($this->tpl, [
