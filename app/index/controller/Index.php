@@ -44,7 +44,7 @@ class Index extends Base
                 $site = Site::where('url','=',$site_url)->findOrFail();
                 return json(['code' => 1, 'msg' => '已存在相同网址']);
             } catch (ModelNotFoundException $e) {
-                $client = new Client();
+                $client = new Client(['verify' => false ]);
                 $res = $client->request('GET', $site_url);
                 if ((int)($res->getStatusCode()) != 200) {
                     return json(['code' => 1, 'msg' => '网址请求失败']);

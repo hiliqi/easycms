@@ -39,5 +39,6 @@ return [
         "category2" => "Category2",
         "custom" => "Custom"
     ],
-    "friendship" => "<a href=\"http://xs.com/\">easycms</a>"
+    "friendship" => "<a href=\"http://xs.com/\">easycms</a>",
+    "apikey" => "easycms"
 ];

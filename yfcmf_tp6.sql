@@ -579,6 +579,8 @@ VALUES ('10', 'tpl', 'basic', 'Tpl', '请填写pc模板目录', 'string', 'daoha
 INSERT INTO `__PREFIX__config`
 VALUES ('11', 'mtpl', 'basic', 'Mtpl', '请填写手机模板目录', 'string', 'daohang', '', 'required', '', '');
 INSERT INTO `__PREFIX__config`
+VALUES ('22', 'apikey', 'basic', 'Api Key', 'Api密钥', 'string', 'easycms', '', 'required', '', '');
+INSERT INTO `__PREFIX__config`
 VALUES ('12', 'categorytype', 'dictionary', 'Category type', '', 'array',
         '{\"default\":\"Default\",\"page\":\"Page\",\"article\":\"Article\",\"test\":\"Test\"}', '', '', '', '');
 INSERT INTO `__PREFIX__config`
